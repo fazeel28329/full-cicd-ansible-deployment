@@ -1,0 +1,24 @@
+---
+- name: Deploy Project 3
+  hosts: servers
+  
+
+  tasks:
+    - name: Pull Docker image
+      community.docker.docker_image:
+        name: full-cicd-ansible-deployment
+        source: pull
+
+    - name: Stop existing container
+      community.docker.docker_container:
+        name: full-cicd-container
+        state: absent
+
+    - name: Run Project 3 container
+      community.docker.docker_container:
+        name: full-cicd-container
+        image: full-cicd-ansible-deployment
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "5000:5000"
